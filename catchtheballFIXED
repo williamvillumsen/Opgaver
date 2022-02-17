@@ -1,0 +1,38 @@
+float ballX = 200;
+float ballY = 100;
+float speedX = 20;
+float speedY = 0;
+int hit = 0;
+int miss = 0;
+float paddle = 1000/ (hit+10);
+
+void setup() {
+  size(600,400);
+}
+void draw() {
+  if(mousePressed) {hit = 0; miss = 0;}
+  
+  if(ballX < 0 || ballX > width) speedX = -speedX; //if ball hits the width the ball bounces back on it's x-axis
+  
+  if(ballY > height) { //if ball hits the height the ball bounces back on it's y-axis
+    speedY = -speedY; //the speed becomes reversed
+    float distance = abs(mouseX - ballX); //we need an abs as it counts hit or miss more precisely
+    if (distance < paddle) hit += 1; //if the ball hits the paddle then it registers hit +1
+    else miss += 1; //if the ball misses the paddle then it registers miss +1
+  } 
+  
+  else speedY += 1; //resets the ball to go up and down the y-axis
+  
+  ballX += speedX; //makes the ball go up-to and the same as speedX
+  ballY += speedY; //makes the ball go up-to and the same as speedY
+  
+  background(100,200,50); //background can't be in void setup as the frame keeps refreshing
+  fill(200,100,50);
+  ellipse(ballX,ballY,50,50);
+  fill(50,100,20);
+  rect(mouseX-paddle,height-10,2*paddle,30); //setting x as "mouseX" and y as "height" makes the paddle move
+  
+fill (0); //makes the text black
+text ("hit: " + hit, 10, 20); // for every hit it counts +1 hit
+text ("miss: " + miss, 10, 40); //for every miss it counts +1 miss
+}
